@@ -145,8 +145,8 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/login'
 
 #more security stuff
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True 
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True 
 
 # for deployment on heroku
 

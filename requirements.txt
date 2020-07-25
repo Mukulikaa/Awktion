@@ -1,3 +1,5 @@
 Django
 Pillow
 Django_heroku
+Gunicorn
+Dj_database_url

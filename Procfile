@@ -1,1 +1,1 @@
-web: gunicorn commerce.wsgi
+web: python manage.py runserver

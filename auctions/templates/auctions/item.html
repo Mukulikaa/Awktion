@@ -1,0 +1,134 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+{% load tz %}
+{% block body %}
+
+<!--Info and enter bid-->
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <div class="card mb-4" style="width: 40rem; margin: 10px;">
+                <img src="{{ item.display.url }}" class="p-2 rounded float-left" alt="..." style="min-height: 30rem; background-image: cover;">
+                <div class="card-body pull-right">
+                        <h3 class="p-2"> {{ item.title }} </h3>
+                        <h6 class="p-2"> Listed by {{ item.author }} </h6>
+                        <p class="p-2"> {{ item.created_on | localtime }} </p>
+                        <p class="p-2"> Description: {{ item.details }} </p>
+                        <p class="p-2"> Category: {{ item.category.category }}</p>
+                        <h6 class="p-2"> Minimum bid: ₹{{ item.minbid }} </h6>
+                        
+                        <!--Bid form-->
+                        {% if check %}
+                        <a class="btn btn-sm btn-primary" href="{% url 'auctions:close' item.id %}">Close Bidding</a>
+                        <div class="alert alert-warning" role="alert">
+                            Warning: You can't close listings without bids.
+                        </div>
+                        {% else %}
+                        <form class="p-2" action="{% url 'auctions:item' item.id %}" method="POST" >
+                                {% csrf_token %}
+                                <div class="form-row align-items-center">
+                                    <div class="col-auto">
+                                        {{ form.bid.label }} {{ form.bid }}
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary btn-sm">Bid</button>
+                                    </div>
+                                </div>
+                                <p>{{ message }}</p>
+                        </form><br>
+                        
+                        <!--Add to Watchlist-->
+                            {% if there %}
+                            <a class="btn btn-primary btn-small" href="{% url 'auctions:removefromwatchlist' item.id %}">Remove from Watchlist</a>
+                            {% else %}
+                            <a class="btn btn-primary btn-small" href="{% url 'auctions:addtowatchlist' item.id %}">Add to Watchlist</a>
+                            {% endif %}
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Current Bids Section-->
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <h2>Current Bids</h2>
+            {% for bid in bids %}
+            <div class="p-3 bg-white mt-2 rounded">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row user"><img class="rounded-circle img-fluid img-responsive" src="{% static 'auctions/thumbnail.png' %}" width="40">
+                        <div class="d-flex flex-column ml-2"><span class="font-weight-bold">{{ bid.bidder }}</span><span class="day">{{ bid.created_on }}</span></div>
+                    </div>
+                    <div class="d-flex align-items-center px-3 heart border"><i class="fa fa-heart-o heart-icon"></i><span class="ml-2">₹{{ bid.bid }}</span></div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No bids yet.</p>
+            {% endfor %}
+            
+        </div>
+    </div>
+</div>
+
+<!--Comment section-->
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <h2>Comments</h2>
+
+            {% for comment in comments %}
+            <div class="p-3 bg-white mt-2 rounded">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row user"><img class="rounded-circle img-fluid img-responsive" src="{% static 'auctions/thumbnail.png' %}" alt="" width="40">
+                        <div class="d-flex flex-column ml-2"><span class="font-weight-bold">{{ comment.commenter }}</span><span class="day">{{ comment.created_on }}</span></div>
+                    </div>
+                    <!--<div class="d-flex align-items-center px-3 heart border"><i class="fa fa-heart-o heart-icon"></i><span class="ml-2">35</span></div>-->
+                </div>
+                <div class="comment-text text-justify mt-2">
+                    <p>{{ comment.comment }}</p>
+                </div>
+                <!--<div class="d-flex justify-content-end align-items-center comment-buttons mt-2 text-right">
+                    <span class="mr-3 delete">Delete</span>
+                    <button class="btn btn-success btn-sm border-0 px-3" type="button">Edit</button>
+                </div>-->
+            </div>
+            {% empty %}
+            <p>No comments yet.</p>
+            {% endfor %}
+
+            <div class="p-3 bg-white mt-2 rounded">
+                <form action="{% url 'auctions:comment' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="comment-text text-justify mt-2">
+                        <div class="d-flex flex-row user">
+                            <img class="rounded-circle img-fluid img-responsive" src="{% static 'auctions/thumbnail.png' %}" width="40">
+                        </div>
+                        <input name="comment" type="text" class="form-control border-0 no-box-shadow ml-1" placeholder="Leave a comment..." required>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center comment-buttons mt-2 text-right">
+                        <button class="btn btn-success btn-sm border-0 px-3" type="submit">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Delete listing-->
+{% if check %}
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <a class="btn btn-sm btn-primary" type="button" href="{% url 'auctions:delete' item.id %}" >Delete listing</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+

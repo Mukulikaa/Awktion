@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <h2> Create a Listing </h2><br>
+    <div class="alert alert-warning" role="alert">
+        Note: Your listing will show up only after the admin approves.
+    </div>
+    <form action="{% url 'auctions:create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.title.label }}{{ form.title }}
+        </div>
+        <div class="form-group">
+            {{ form.category.label }}{{ form.category }}
+        </div>
+        <div class="form-group">
+            {{ form.details.label }}{{ form.details }}
+        </div>
+        <div class="form-group">
+            {{ form.display.label }}{{ form.display }}
+        </div>
+        <div class="form-group">
+            {{ form.minbid.label }}{{ form.minbid }}
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Create</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

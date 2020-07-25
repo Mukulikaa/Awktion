@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="dropdown">
+            <h1 class="float-left">Auction</h1>
+            <button class="btn btn-secondary dropdown-toggle float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if user.is_authenticated %}
+                Hello, <strong>{{ user.username }}</strong>
+                {% else %}
+                Not signed in  
+                {% endif %}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if user.is_authenticated %}
+                <a class="dropdown-item" href="{% url 'auctions:myitems' %}">My Listings</a>
+                <a class="dropdown-item" href="{% url 'auctions:logout' %}">Log Out</a>
+                {% else %}
+                <a class="dropdown-item" href="{% url 'auctions:login' %}?next={{ request.path }}">Log In</a>
+                <a class="dropdown-item" href="{% url 'auctions:register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div><br><br>
+        <hr>
+        <div class="container-fluid">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:index' %}">Active Listings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:create' %}">Create Listing</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'auctions:watchlist' %}">Watchlist</a>
+            </li>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(52, 138, 236);">
+                    Categories
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'antiques' %}">Antiques</a>
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'books' %}">Books</a>
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'crafts' %}">Crafts</a>
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'electronics' %}">Electronics</a>
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'jewellery' %}">Jewellery</a>
+                    <a class="dropdown-item" href="{% url 'auctions:category' 'paintings' %}">Paintings</a>
+                </div>
+            </div>
+            {% endif %}
+        </ul>
+        </div>
+        <hr>
+        {% block body %}
+        {% endblock %}
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    </body>
+</html>

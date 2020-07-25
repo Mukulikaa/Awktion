@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+{% block body %}
+
+    {% if title %}
+    <h2>{{ title }}</h2>
+    {% else %}
+    <h2>Title</h2>
+    {% endif %}
+    <br>
+    
+    <div class="row">
+        {% if message %}
+        <div class="col-sm-3">
+            <p>{{ message }}</p>
+        </div>
+        {% else %}
+            {% for item in items %}
+                {% if item.is_approved %}
+                    {% if item.is_open %}
+                        <div class="col-sm-3">
+                            <div class="card" style="width: 18rem; margin: 10px;">
+                                <img src="{{ item.display.url }}" class="card-img-top" alt="..." style="max-width: 18rem; max-height: 18rem;">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ item.title }}</h5>
+                                <p class="card-text"> {{ item.details }} </p>
+                                <a href="{% url 'auctions:item' item.id %}" class="btn btn-primary">Peruse</a>
+                                </div>
+                            </div> 
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% empty %}
+            <div class="container-fluid">
+                <p>No listings yet.</p>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+
+{% endblock %}

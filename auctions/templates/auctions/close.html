@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <h1>Bidding Closed</h1>
+    <h4>User {{ bid.bidder }} has won the item with a winning bid of {{ bid.bid }}.</h4>
+
+    <a class="btn btn-primary" href="{% url 'auctions:index' %}">Go back to Active Listings</a>
+</div>
+
+{% endblock %}

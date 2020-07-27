@@ -146,9 +146,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = 'UePpt-RraEAAAAAAAAAAQfkkokHl06awYJ0CTC9i_u3JSNyQK6_f_78VNSCDNzSC' 
-DROPBOX_ROOT_PATH = 'media'
 
 # for @login_required
 

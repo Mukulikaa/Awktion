@@ -3,3 +3,5 @@ Pillow
 Django_heroku
 Gunicorn
 Dj_database_url
+Django-storages
+boto3
